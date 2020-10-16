@@ -24,12 +24,12 @@ HASH_FUNCS = {
 
 @st.cache(hash_funcs=HASH_FUNCS)
 def gen_model():
-    return transformers.pipeline("text-generation", device=1)
+    return transformers.pipeline("text-generation")
 
 
 @st.cache(hash_funcs=HASH_FUNCS)
 def gen_mask_filler():
-    return transformers.pipeline("fill-mask", device=0)
+    return transformers.pipeline("fill-mask")
 
 
 @st.cache(hash_funcs=HASH_FUNCS)
