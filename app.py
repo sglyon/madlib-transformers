@@ -98,6 +98,17 @@ def replace_pos_tokens(doc, pct, prompt):
 
 st.title("Transformed MadLibs")
 
+"""
+In this application we will use Python NLP tools to perform various tasks:
+
+1. The user can write a prompt or start of a story and the AI will complete the paragraph. This uses the awesome huggingface/transformers library and the `"text-generation"` pipeline
+2. Spacy will be used to do part of speech tagging on whichever of the three "paragraph completions" the user selects.
+3. huggingface/transformers will then be used in combination with Spacy's part of speech tagging to play madlibs! About 1/3 of all nouns, adjectives, and verbs will be masked and then filled in with the `"fill-mask"` pipeline
+
+"""
+
+"## Step 1: use text-generation pipeline on user supplied prompt"
+
 prompt = st.text_input(
     "Write first few (~10) words of a story below",
     value="The big blue snake slithered past my feet",
@@ -113,11 +124,15 @@ quoted_selection = selected.replace("\n\n", "\n\n>")
 
 f"You selected:\n\n > {quoted_selection}"
 
+"## Step 2: Spacy part of speech tagging"
+
 "Here is a view of the part of speech:"
 
 doc = spacy_model(selected)
 
 st.image(spacy.displacy.render(doc, style="dep", jupyter=False))
+
+"## Step 3: Madlibs! fill-mask pipeline to replace nouns/adjectives/verbs"
 
 output = replace_pos_tokens(doc, 1.0 / 3.0, prompt)
 
